@@ -15,7 +15,7 @@ def post_offer(session_code):
         data = request.json
         logger.debug(f"Received POST /offer/{{session_code}}: {{data}}")
         if not data or 'sdp' not in data or 'type' not in data:
-            logger.error("Invalid data in POST /offer")
+            logger.error(f"Invalid data in POST /offer/{{session_code}}")
             return jsonify({'status': 'error', 'message': 'Invalid data'}), 400
         if session_code not in sessions:
             sessions[session_code] = {}
@@ -24,7 +24,7 @@ def post_offer(session_code):
         logger.info(f"Stored offer for session {{session_code}}")
         return jsonify({'status': 'ok'})
     except Exception as e:
-        logger.error(f"Error in post_offer: {{e}}")
+        logger.error(f"Error in post_offer for session {{session_code}}: {{e}}")
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
 @app.route('/offer/<session_code>', methods=['GET'])
@@ -39,7 +39,7 @@ def get_offer(session_code):
         logger.warning(f"No offer found for session {{session_code}}")
         return jsonify({'status': 'not_found'}), 404
     except Exception as e:
-        logger.error(f"Error in get_offer: {{e}}")
+        logger.error(f"Error in get_offer for session {{session_code}}: {{e}}")
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
 @app.route('/answer/<session_code>', methods=['POST'])
@@ -48,7 +48,7 @@ def post_answer(session_code):
         data = request.json
         logger.debug(f"Received POST /answer/{{session_code}}: {{data}}")
         if not data or 'sdp' not in data or 'type' not in data:
-            logger.error("Invalid data in POST /answer")
+            logger.error(f"Invalid data in POST /answer/{{session_code}}")
             return jsonify({'status': 'error', 'message': 'Invalid data'}), 400
         if session_code not in sessions:
             sessions[session_code] = {}
@@ -57,7 +57,7 @@ def post_answer(session_code):
         logger.info(f"Stored answer for session {{session_code}}")
         return jsonify({'status': 'ok'})
     except Exception as e:
-        logger.error(f"Error in post_answer: {{e}}")
+        logger.error(f"Error in post_answer for session {{session_code}}: {{e}}")
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
 @app.route('/answer/<session_code>', methods=['GET'])
@@ -72,7 +72,7 @@ def get_answer(session_code):
         logger.warning(f"No answer found for session {{session_code}}")
         return jsonify({'status': 'not_found'}), 404
     except Exception as e:
-        logger.error(f"Error in get_answer: {{e}}")
+        logger.error(f"Error in get_answer for session {{session_code}}: {{e}}")
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
 if __name__ == '__main__':
